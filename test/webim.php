@@ -9,9 +9,9 @@
  *
  */
 
-$domain = "monit.cn";
-$apikey = "p";
-$host = "192.168.1.16";
+$domain = "test";
+$apikey = "test";
+$host = "localhost";
 $port = "8000";
 
 require_once(dirname(__FILE__).'/../webim.class.php');
