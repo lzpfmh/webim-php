@@ -52,26 +52,26 @@ debug($res->success, "check_connect", $res);
 $res = $im->online($large_buddies, "room1");
 debug($res->success, "online", $res);
 
-$res = $im->presence("dnd", "I'm buzy now.");
-debug($res == "ok", "presence", $res);
+$res = json_decode($im->presence("dnd", "I'm buzy now."));
+debug($res.status == "ok", "presence", $res);
 
-$res = $im->message("unicast", "susan", "Hello.");
-debug($res == "ok", "message", $res);
+$res = json_decode($im->message("unicast", "susan", "Hello."));
+debug($res.status == "ok", "message", $res);
 
-$res = $im->status("susan", "inputting...");
-debug($res == "ok", "status", $res);
+$res = json_decode($im->status("susan", "inputting..."));
+debug($res.status == "ok", "status", $res);
 
 $res = $im->join("room2");
 debug($res, "join", $res);
 
 $res = $im->leave("room2");
-debug($res == "ok", "leave", $res);
+debug($res.status == "ok", "leave", $res);
 
 $res = $im->members("room1");
 debug($res, "members", $res);
 
 $res = $im->offline();
-debug($res == "ok", "offline", $res);
+debug($res.status == "ok", "offline", $res);
 
 $res = $im->online("", "");
 debug($res->success && empty($res->rooms) && empty($res->buddies), "online with empty room and buddy", $res);
