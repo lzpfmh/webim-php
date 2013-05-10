@@ -14,10 +14,9 @@ $apikey = "test";
 $host = "localhost";
 $port = "8000";
 
-#echo "hahaha";
-
 require_once(dirname(__FILE__).'/../http_client.php');
 require_once(dirname(__FILE__).'/../functions.helper.php');
+require_once(dirname(__FILE__).'/../functions.json.php');
 require_once(dirname(__FILE__).'/../class.webim_client.php');
 
 $test = (object)array("id" => 'test', "nick" => "Test", "show" => "available");
@@ -53,25 +52,25 @@ $res = $im->online($large_buddies, "room1");
 debug($res->success, "online", $res);
 
 $res = json_decode($im->presence("dnd", "I'm buzy now."));
-debug($res.status == "ok", "presence", $res);
+debug($res->status == "ok", "presence", $res);
 
 $res = json_decode($im->message("unicast", "susan", "Hello."));
-debug($res.status == "ok", "message", $res);
+debug($res->status == "ok", "message", $res);
 
 $res = json_decode($im->status("susan", "inputting..."));
-debug($res.status == "ok", "status", $res);
+debug($res->status == "ok", "status", $res);
 
 $res = $im->join("room2");
 debug($res, "join", $res);
 
-$res = $im->leave("room2");
-debug($res.status == "ok", "leave", $res);
+$res = json_decode($im->leave("room2"));
+debug($res->status == "ok", "leave", $res);
 
 $res = $im->members("room1");
 debug($res, "members", $res);
 
-$res = $im->offline();
-debug($res.status == "ok", "offline", $res);
+$res = json_decode($im->offline());
+debug($res->status == "ok", "offline", $res);
 
 $res = $im->online("", "");
 debug($res->success && empty($res->rooms) && empty($res->buddies), "online with empty room and buddy", $res);
