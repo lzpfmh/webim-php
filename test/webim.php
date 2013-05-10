@@ -14,7 +14,12 @@ $apikey = "test";
 $host = "localhost";
 $port = "8000";
 
-require_once(dirname(__FILE__).'/../webim.class.php');
+#echo "hahaha";
+
+require_once(dirname(__FILE__).'/../http_client.php');
+require_once(dirname(__FILE__).'/../functions.helper.php');
+require_once(dirname(__FILE__).'/../class.webim_client.php');
+
 $test = (object)array("id" => 'test', "nick" => "Test", "show" => "available");
 $susan = (object)array("id" => 'susan', "nick" => "Susan", "show" => "available");
 $jack = (object)array("id" => 'jack', "nick" => "Jack", "show" => "available");
@@ -26,18 +31,18 @@ for($i = 0; $i < 2000; $i++){
 }
 
 $large_buddies = implode(",", $large_buddies);
-echo "online_buddy_size: ".strlen($large_buddies);
+echo "<br>online_buddy_size: ".strlen($large_buddies);
 
 
-$im_test = new WebIM($test, null, $domain, $apikey, $host, $port);
-$im = new WebIM($susan, null, $domain, $apikey, $host, $port);
+$im_test = new webim_client($test, null, $domain, $apikey, $host, $port);
+$im = new webim_client($susan, null, $domain, $apikey, $host, $port);
 $im->online("jack,josh", "room1,room2");
 
-$im = new WebIM($jack, null, $domain, $apikey, $host, $port);
+$im = new webim_client($jack, null, $domain, $apikey, $host, $port);
 
 //var_export($im);
-echo "\n\n\nWebIM PHP Lib Test\n";
-echo "===================================\n\n";
+echo "<br>\n\n\nWebIM PHP Lib Test\n<br>";
+echo "<br>===================================\n\n<br>";
 
 $count = 0;
 $error = 0;
@@ -71,9 +76,9 @@ debug($res == "ok", "offline", $res);
 $res = $im->online("", "");
 debug($res->success && empty($res->rooms) && empty($res->buddies), "online with empty room and buddy", $res);
 
-echo "===================================\n";
+echo "<br>===================================<br>\n";
 $succ = $count - $error;
-echo "$count test, $succ pass, $error error.\n\n";
+echo "<br>$count test, $succ pass, $error error.<br>\n\n";
 
 function debug($succ, $mod, $res){
 	global $count, $error;
@@ -82,14 +87,14 @@ function debug($succ, $mod, $res){
 	if(is_string($res)){
 		echo $res;
 	}else{
-		echo json_encode($res);
+		echo "<br>".json_encode($res)."<br>";
 	}
 	echo "\n";
 	if($succ){
-		echo "------------------------------------\n\n";
+		echo "<br>------------------------------------<br>\n\n";
 	}else{
 		$error++;
-		echo "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n\n";
+		echo "<br>~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~<br>\n\n";
 	}
 }
 

@@ -1,10 +1,10 @@
 <?php
 
-require_once( dirname( __FILE__ ) . '/' . '../webim.php' );
+require_once( dirname( __FILE__ ) . '/' . '../class.webim_db.php' );
 
 define( 'WEBIMDB_DEBUG', true );
 define( 'WEBIMDB_CHARSET', 'utf8' );
-$imdb = new webim_db( 'root', 'public', 'blog', 'localhost' );
+$imdb = new webim_db( 'root', 'public', 'webim4', 'localhost' );
 $imdb->set_prefix( 'wp_' );
 $imdb->add_tables( array( 'users' ) );
 
