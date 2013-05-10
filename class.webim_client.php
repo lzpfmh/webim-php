@@ -11,6 +11,8 @@
 
 class webim_client
 {
+    //TODO: should be const
+    var $apivsn = "v4";
 
 	var $user;
 	var $domain;
@@ -19,7 +21,7 @@ class webim_client
 	var $port;
 	var $client;
 	var $ticket;
-	var $version = 3;
+	var $version = 4;
 
 	/**
 	 * New
@@ -65,31 +67,33 @@ class webim_client
 
 
 	/**
-	 * Join room.
+	 * Join group.
 	 *
-	 * @param string $room_id
+	 * @param string $gid
 	 *
-	 * @return object room_info
+	 * @return object group_info
 	 * 	-id
 	 * 	-count
 	 */
 
-	function join($room_id){
+    #FIXME: fix json decode
+	function join($gid){
 		$data = array(
 			'version' => $this->version,
 			'ticket' => $this->ticket,
 			'apikey' => $this->apikey,
 			'domain' => $this->domain,
 			'nick' => $this->user->nick,
-			'room' => $room_id,
+			'room' => $gid,
+			'group' => $gid,
 		);
-		$this->client->post('/room/join', $data);
+		$this->client->post($this->apiurl('/group/join'), $data);
 		$cont = $this->client->getContent();
 		if($this->client->status == "200"){
 			$da = json_decode($cont);
 			return (object)array(
-				"id" => $room_id,
-				"count" => $da ->{$room_id},
+				"id" => $gid,
+				"count" => $da ->{$gid},
 			);
 		}else{
 			return null;
@@ -97,50 +101,53 @@ class webim_client
 	}
 
 	/**
-	 * Leave room.
+	 * Leave group.
 	 *
-	 * @param string $room_id
+	 * @param string $gid
 	 *
 	 * @return ok
 	 *
 	 */
 
-	function leave($room_id){
+	function leave($gid){
 		$data = array(
 			'version' => $this->version,
 			'ticket' => $this->ticket,
 			'apikey' => $this->apikey,
 			'domain' => $this->domain,
 			'nick' => $this->user->nick,
-			'room' => $room_id,
+			'room' => $gid,
+			'group' => $gid,
 		);
-		$this->client->post('/room/leave', $data);
+		$this->client->post($this->apiurl('/group/leave'), $data);
 		return $this->client->getContent();
 	}
 
 	/**
 	 * Get room members.
 	 *
-	 * @param string $room_id
+	 * @param string $gid
 	 *
 	 * @return array $members
 	 * 	array($member_info)
 	 *
 	 */
 
-	function members($room_id){
+    #FIXME: check json return
+	function members($gid){
 		$data = array(
 			'version' => $this->version,
 			'ticket' => $this->ticket,
 			'apikey' => $this->apikey,
 			'domain' => $this->domain,
-			'room' => $room_id,
+			'room' => $gid,
+			'group' => $gid,
 		);
-		$this->client->get('/room/members', $data);
+		$this->client->get($this->apiurl('/group/members'), $data);
 		$cont = $this->client->getContent();
 		if($this->client->status == "200"){
 			$da = json_decode($cont);
-			return $da ->{$room_id};
+			return $da ->{$gid};
 		}else{
 			return null;
 		}
@@ -166,7 +173,7 @@ class webim_client
 			'to' => $to,
 			'show' => $show,
 		);
-		$this->client->post('/statuses', $data);
+		$this->client->post($this->apiurl('/statuses'), $data);
 		return $this->client->getContent();
 	}
 
@@ -195,7 +202,7 @@ class webim_client
 			'style' => $style,
 			'timestamp' => empty($timestamp) ? (string)webim_microtime_float()*1000 : $timestamp,
 		);
-		$this->client->post('/messages', $data);
+		$this->client->post($this->apiurl('/messages'), $data);
 		return $this->client->getContent();
 	}
 
@@ -220,7 +227,7 @@ class webim_client
 			'show' => $show,
 			'status' => $status,
 		);
-		$this->client->post('/presences/show', $data);
+		$this->client->post($this->apiurl('/presences/show'), $data);
 		return $this->client->getContent();
 	}
 
@@ -239,7 +246,7 @@ class webim_client
 			'apikey' => $this->apikey,
 			'domain' => $this->domain
 		);
-		$this->client->post('/presences/offline', $data);
+		$this->client->post($this->apiurl('/presences/offline'), $data);
 		return $this->client->getContent();
 	}
 
@@ -247,21 +254,22 @@ class webim_client
 	 * User online
 	 *
 	 * @param string $buddy_ids
-	 * @param string $room_ids
+	 * @param string $group_ids
 	 *
 	 * @return object
 	 * 	-success: true
 	 * 	-connection:
 	 * 	-user:
 	 * 	-buddies: [&buddyInfo]
-	 * 	-rooms: [&roomInfo]
+	 * 	-groupss: [&groupInfo]
 	 * 	-error_msg:
 	 *
 	 */
-	function online($buddy_ids, $room_ids){
+	function online($buddy_ids, $group_ids){
 		$data = array(
 			'version' => $this->version,
-			'rooms'=> $room_ids, 
+			'rooms'=> $group_ids, 
+			'groups'=> $group_ids, 
 			'buddies'=> $buddy_ids, 
 			'domain' => $this->domain, 
 			'apikey' => $this->apikey, 
@@ -273,7 +281,7 @@ class webim_client
 		if ( isset( $this->user->visitor ) ) {
 			$data['visitor'] = $this->user->visitor;
 		}
-		$this->client->post('/presences/online', $data);
+		$this->client->post($this->apiurl('/presences/online'), $data);
 		$cont = $this->client->getContent();
 		$da = json_decode($cont);
 		if($this->client->status != "200" || empty($da->ticket)){
@@ -285,20 +293,22 @@ class webim_client
 			foreach($da->buddies as $buddy){
 				$buddies[] = (object)array("id" => $buddy->name, "nick" => $buddy->nick, "show" => $buddy->show, "presence" => "online", "status" => $buddy->status);
 			}
-			$rooms = array();
-			foreach($da->rooms as $room){
-				$rooms[] = (object)array("id" => $room->name, "count" => $room->total);
+			$groups = array();
+			foreach($da->groups as $group){
+				$groups[] = (object)array("id" => $group->name, "count" => $group->total);
 			}
 			$connection = (object)array(
 				"ticket" => $ticket,
 				"domain" => $this->domain,
+                #FIXME: should return from im server
 				"server" => "http://".$this->host.":".(string)$this->port."/packets",
 			);
 			return (object)array(
 				"success" => true, 
 				"connection" => $connection, 
 				"buddies" => $buddies, 
-				"rooms" => $rooms, 
+				"rooms" => $groups, 
+				"groups" => $groups, 
 				"server_time" => microtime(true)*1000, 
 				"user" => $this->user
 			);
@@ -325,7 +335,7 @@ class webim_client
 			'nick'=> $this->user->nick, 
 			'show' => $this->user->show
 		);
-		$this->client->post('/presences/online', $data);
+		$this->client->post($this->apiurl('/presences/online'), $data);
 		$cont = $this->client->getContent();
 		$da = json_decode($cont);
 		if($this->client->status != "200" || empty($da->ticket)){
@@ -335,6 +345,10 @@ class webim_client
 			return (object)array("success" => true, "ticket" => $da->ticket);
 		}
 	}
+
+    private function apiurl($path) {
+        return '/' . $this->apivsn . '/' . $path;
+    }
 }
 
 ?>
