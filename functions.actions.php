@@ -165,7 +165,8 @@ function webim_action_online() {
 function webim_action_offline() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket" );
-	echo webim_callback( $imclient->offline() );
+    $imclient->offline();
+	echo webim_callback( "ok"  );
 }
 
 function webim_action_message() {
@@ -210,7 +211,8 @@ function webim_action_logmsg() {
 function webim_action_presence() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket", "show" );
-	echo webim_callback( $imclient->presence( webim_gp("show"), webim_gp("status") ) ) ;
+    $imclient->presence( webim_gp("show"), webim_gp("status") );
+	echo webim_callback( "ok" ) ;
 }
 
 function webim_action_history() {
@@ -222,7 +224,8 @@ function webim_action_history() {
 function webim_action_status() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket", "show", "to" );
-	echo webim_callback( $imclient->status( webim_gp("to"), webim_gp("show") ) ) ;
+    $imclient->status( webim_gp("to"), webim_gp("show") );
+	echo webim_callback( "ok" ) ;
 }
 
 function webim_action_members() {
@@ -256,7 +259,8 @@ function webim_action_join() {
 function webim_action_leave() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket", "id" );
-	echo webim_callback( $imclient->leave( webim_gp("id") ) );
+    $imclient->leave( webim_gp("id") );
+	echo webim_callback( "ok" );
 }
 
 function webim_action_buddies() {
@@ -274,7 +278,8 @@ function webim_action_rooms() {
 function webim_action_refresh() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket" );
-	echo webim_callback( $imclient->offline() );
+    $imclient->offline();
+	echo webim_callback( "ok" );
 }
 
 function webim_action_clear_history() {

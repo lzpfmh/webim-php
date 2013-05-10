@@ -349,6 +349,7 @@ class webim_client
     private function apiurl($path) {
         return '/' . $this->apivsn . '/' . $path;
     }
+
 }
 
 ?>
