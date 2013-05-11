@@ -301,7 +301,7 @@ class webim_client
 				"ticket" => $ticket,
 				"domain" => $this->domain,
                 #FIXME: should return from im server
-				"server" => "http://".$this->host.":".(string)$this->port."/packets",
+				"server" => "http://".$this->host.":".(string)$this->port.'/'.$this->apivsn."/packets",
 			);
 			return (object)array(
 				"success" => true, 
