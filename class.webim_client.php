@@ -87,7 +87,7 @@ class webim_client
 			'room' => $gid,
 			'group' => $gid,
 		);
-		$this->client->post($this->apiurl('/group/join'), $data);
+		$this->client->post($this->apiurl('group/join'), $data);
 		$cont = $this->client->getContent();
 		if($this->client->status == "200"){
 			$da = json_decode($cont);
@@ -119,7 +119,7 @@ class webim_client
 			'room' => $gid,
 			'group' => $gid,
 		);
-		$this->client->post($this->apiurl('/group/leave'), $data);
+		$this->client->post($this->apiurl('group/leave'), $data);
 		return $this->client->getContent();
 	}
 
@@ -143,7 +143,7 @@ class webim_client
 			'room' => $gid,
 			'group' => $gid,
 		);
-		$this->client->get($this->apiurl('/group/members'), $data);
+		$this->client->get($this->apiurl('group/members'), $data);
 		$cont = $this->client->getContent();
 		if($this->client->status == "200"){
 			$da = json_decode($cont);
@@ -173,7 +173,7 @@ class webim_client
 			'to' => $to,
 			'show' => $show,
 		);
-		$this->client->post($this->apiurl('/statuses'), $data);
+		$this->client->post($this->apiurl('statuses'), $data);
 		return $this->client->getContent();
 	}
 
@@ -202,7 +202,7 @@ class webim_client
 			'style' => $style,
 			'timestamp' => empty($timestamp) ? (string)webim_microtime_float()*1000 : $timestamp,
 		);
-		$this->client->post($this->apiurl('/messages'), $data);
+		$this->client->post($this->apiurl('messages'), $data);
 		return $this->client->getContent();
 	}
 
@@ -227,7 +227,7 @@ class webim_client
 			'show' => $show,
 			'status' => $status,
 		);
-		$this->client->post($this->apiurl('/presences/show'), $data);
+		$this->client->post($this->apiurl('presences/show'), $data);
 		return $this->client->getContent();
 	}
 
@@ -246,7 +246,7 @@ class webim_client
 			'apikey' => $this->apikey,
 			'domain' => $this->domain
 		);
-		$this->client->post($this->apiurl('/presences/offline'), $data);
+		$this->client->post($this->apiurl('presences/offline'), $data);
 		return $this->client->getContent();
 	}
 
@@ -281,7 +281,7 @@ class webim_client
 		if ( isset( $this->user->visitor ) ) {
 			$data['visitor'] = $this->user->visitor;
 		}
-		$this->client->post($this->apiurl('/presences/online'), $data);
+		$this->client->post($this->apiurl('presences/online'), $data);
 		$cont = $this->client->getContent();
 		$da = json_decode($cont);
 		if($this->client->status != "200" || empty($da->ticket)){
@@ -335,7 +335,7 @@ class webim_client
 			'nick'=> $this->user->nick, 
 			'show' => $this->user->show
 		);
-		$this->client->post($this->apiurl('/presences/online'), $data);
+		$this->client->post($this->apiurl('presences/online'), $data);
 		$cont = $this->client->getContent();
 		$da = json_decode($cont);
 		if($this->client->status != "200" || empty($da->ticket)){
