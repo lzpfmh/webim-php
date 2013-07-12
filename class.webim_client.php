@@ -302,6 +302,8 @@ class webim_client
 				"domain" => $this->domain,
                 #FIXME: should return from im server
 				"server" => $da->jsonpd,
+				"jsonpd" => $da->jsonpd,
+				"websocket" => $da->websocket,
 			);
 			return (object)array(
 				"success" => true, 
