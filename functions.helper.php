@@ -41,7 +41,7 @@ function webim_validate_presence() {
 	$invalid_keys = array();
 	foreach( $keys as $key ) {
 		$val = webim_gp( $key );
-		if ( !count( trim( $val ) ) ) 
+		if ( !strlen( trim( $val ) ) ) 
 			$invalid_keys[] = $key;
 	}
 	if( $invalid_keys ) {
