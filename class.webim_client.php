@@ -318,6 +318,55 @@ class webim_client
 	}
 
 	/**
+	 * Open chat
+	 *
+	 * @param string $group_id
+	 *
+	 * @return 
+	 *
+	 */
+
+	function openchat($group_id, $nick){
+		$data = array(
+			'version' => $this->version,
+			'ticket' => $this->ticket,
+			'apikey' => $this->apikey,
+			'domain' => $this->domain,
+			'group' => $group_id,
+			'nick' => $nick,
+		);
+		$this->client->post($this->apiurl('chats/open'), $data);
+		$da = json_decode( $this->client->getContent() );
+		if($this->client->status != "200" || empty($da->status)){
+			return array();
+		} else {
+			return $da->buddies;
+		}
+	}
+
+	/**
+	 * Open chat
+	 *
+	 * @param string $group_id
+	 *
+	 * @return 
+	 *
+	 */
+
+	function closechat($group_id){
+		$data = array(
+			'version' => $this->version,
+			'ticket' => $this->ticket,
+			'apikey' => $this->apikey,
+			'domain' => $this->domain,
+			'group' => $group_id,
+		);
+		$this->client->post($this->apiurl('chats/close'), $data);
+		return json_decode( $this->client->getContent() );
+	}
+
+
+	/**
 	 * Check the server is connectable or not.
 	 *
 	 * @return object

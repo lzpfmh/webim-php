@@ -307,4 +307,16 @@ function webim_action_notifications() {
 	echo webim_callback( webim_get_notifications() );
 }
 
+function webim_action_openchat() {
+	global $imuser, $imclient, $_IMC;
+	webim_validate_presence( "ticket", "group_id", "nick" );
+	echo webim_callback( $imclient->openchat( webim_gp("group_id"), webim_gp("nick") ) );
+}
+
+function webim_action_closechat() {
+	global $imuser, $imclient, $_IMC;
+	webim_validate_presence( "ticket", "group_id" );
+	echo webim_callback( $imclient->closechat( webim_gp("group_id") ) );
+}
+
 ?>
