@@ -60,7 +60,7 @@ function webim_is_remote() {
 	if ( strlen($_SERVER['HTTP_REFERER']) ) {
 		$referer = parse_url( $_SERVER['HTTP_REFERER'] );
 		$referer['port'] = isset( $referer['port'] ) ? $referer['port'] : "80";
-		if ( $referer['port'] != $_SERVER['SERVER_PORT'] || $referer['host'] != $_SERVER['SERVER_NAME'] || $referer['scheme'] != ( (@$_SERVER["HTTPS"] == "on") ? "https" : "http" ) ){
+		if ( $referer['port'] != $_SERVER['SERVER_PORT'] || $referer['host'] != $_SERVER['HTTP_HOST'] || $referer['scheme'] != ( (@$_SERVER["HTTPS"] == "on") ? "https" : "http" ) ){
 			$remote = true;
 		}
 	}
@@ -70,7 +70,7 @@ function webim_is_remote() {
 function webim_urlpath() {
 	global $_SERVER;
 	$name = htmlspecialchars($_SERVER['SCRIPT_NAME'] ? $_SERVER['SCRIPT_NAME'] : $_SERVER['PHP_SELF']);
-	return ( (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://" ) . ( ( $_SERVER["SERVER_PORT"] != "80" ) ? ( $_SERVER["SERVER_NAME"].":".$_SERVER["SERVER_PORT"] ) : $_SERVER["SERVER_NAME"] ) . substr( $name, 0, strrpos( $name, '/' ) ) . "/";
+	return ( (@$_SERVER["HTTPS"] == "on") ? "https://" : "http://" ) . ( ( $_SERVER["SERVER_PORT"] != "80" ) ? ( $_SERVER["HTTP_HOST"].":".$_SERVER["SERVER_PORT"] ) : $_SERVER["HTTP_HOST"] ) . substr( $name, 0, strrpos( $name, '/' ) ) . "/";
 }
 
 /**
