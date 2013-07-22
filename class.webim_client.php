@@ -353,18 +353,18 @@ class webim_client
 	 *
 	 */
 
-	function closechat($group_id){
+	function closechat($group_id, $buddy_id){
 		$data = array(
 			'version' => $this->version,
 			'ticket' => $this->ticket,
 			'apikey' => $this->apikey,
 			'domain' => $this->domain,
 			'group' => $group_id,
+			'buddyid' => $buddy_id,
 		);
 		$this->client->post($this->apiurl('chats/close'), $data);
 		return json_decode( $this->client->getContent() );
 	}
-
 
 	/**
 	 * Check the server is connectable or not.

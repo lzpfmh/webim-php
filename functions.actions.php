@@ -316,7 +316,7 @@ function webim_action_openchat() {
 function webim_action_closechat() {
 	global $imuser, $imclient, $_IMC;
 	webim_validate_presence( "ticket", "group_id" );
-	echo webim_callback( $imclient->closechat( webim_gp("group_id") ) );
+	echo webim_callback( $imclient->closechat( webim_gp("group_id"), webim_gp("buddy_id") ) );
 }
 
 ?>
