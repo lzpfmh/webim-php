@@ -334,6 +334,7 @@ class webim_client
 			'domain' => $this->domain,
 			'group' => $group_id,
 			'nick' => $nick,
+			'timestamp' => (string)webim_microtime_float()*1000,
 		);
 		$this->client->post($this->apiurl('chats/open'), $data);
 		$da = json_decode( $this->client->getContent() );
