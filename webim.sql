@@ -29,8 +29,8 @@ CREATE TABLE webim_settings(
 	`uid` mediumint(8) unsigned NOT NULL,
 	`web` blob,
 	`air` blob,
-	`created_at` date DEFAULT NULL,
-	`updated_at` date DEFAULT NULL,
+	`created_at` TIMESTAMP DEFAULT NULL,
+	`updated_at` TIMESTAMP DEFAULT NULL,
 	PRIMARY KEY (`id`) 
 )ENGINE=MyISAM;
 
