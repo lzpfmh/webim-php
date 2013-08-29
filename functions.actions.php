@@ -89,6 +89,16 @@ function webim_action_online() {
 			}
 			$cache_rooms[$id] = $v;
 		}
+		//Add temporary rooms 
+		$temp_rooms = $setting && is_array($setting->temporary_rooms) ? $setting->temporary_rooms : array();
+		for ($i = 0; $i < count($temp_rooms); $i++) {
+			$rr = $temp_rooms[$i];
+			$rr->temporary = true;
+			$rr->pic_url = (webim_urlpath() . "static/images/chat.png");
+			$rooms[] = $rr;
+			$im_rooms[] = $rr->id;
+			$cache_rooms[$rr->id] = $rr;
+		}
 	}else{
 		$rooms = array();
 	}
@@ -249,6 +259,7 @@ function webim_action_join() {
 			"id" => $id,
 			"nick" => webim_gp("nick"),
 			"temporary" => true,
+			"pic_url" => (webim_urlpath() . "static/images/chat.png"),
 		);
 	}
 	if($room){
