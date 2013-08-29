@@ -242,7 +242,15 @@ function webim_action_join() {
 	webim_validate_presence( "ticket", "id" );
 	$id = webim_gp("id");
 	$room = webim_get_rooms( $id );
-	$room = $room[0];
+	if( $room && count($room) ) {
+		$room = $room[0];
+	} else {
+		$room = (object)array(
+			"id" => $id,
+			"nick" => webim_gp("nick"),
+			"temporary" => true,
+		);
+	}
 	if($room){
 		$re = $imclient->join($id);
 		if($re){
@@ -250,11 +258,11 @@ function webim_action_join() {
 			echo webim_callback( $room );
 		}else{
 			header("HTTP/1.0 404 Not Found");
-			echo "Con't join this room right now";
+			echo "Can't join this room right now";
 		}
 	}else{
 		header("HTTP/1.0 404 Not Found");
-		echo "Con't found this room";
+		echo "Can't found this room";
 	}
 }
 
