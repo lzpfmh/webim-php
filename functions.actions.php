@@ -42,6 +42,7 @@ function webim_action_online() {
 	}
 
 	//Find im_buddies
+	$all_buddies = array();
 	foreach($online_buddies as $k => $v){
 		$id = $v->id;
 		$im_buddies[] = $id;
@@ -49,6 +50,7 @@ function webim_action_online() {
 		$v->presence = "offline";
 		$v->show = "unavailable";
 		$cache_buddies[$id] = $v;
+		$all_buddies[] = $id;
 	}
 
 	//Get active buddies info.
@@ -142,7 +144,7 @@ function webim_action_online() {
 			$show_buddies[] = $id;
 		}
 		#show active buddy
-		$show_buddies = array_unique(array_merge($show_buddies, $active_buddies));
+		$show_buddies = array_unique(array_merge($show_buddies, $active_buddies, $all_buddies));
 		$o = array();
 		foreach($show_buddies as $id){
 			//Some user maybe not exist.
