@@ -304,6 +304,7 @@ class webim_client
 				"server" => $da->jsonpd,
 				"jsonpd" => $da->jsonpd,
 				"websocket" => $da->websocket,
+				"mqttd" => $da->mqttd,
 			);
 			return (object)array(
 				"success" => true, 
