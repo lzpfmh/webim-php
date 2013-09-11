@@ -54,7 +54,7 @@ debug($res->success, "online", $res);
 $res = json_decode($im->presence("dnd", "I'm buzy now."));
 debug($res->status == "ok", "presence", $res);
 
-$res = json_decode($im->message("unicast", "susan", "Hello."));
+$res = json_decode($im->message("chat", "susan", "Hello."));
 debug($res->status == "ok", "message", $res);
 
 $res = json_decode($im->status("susan", "inputting..."));

@@ -12,7 +12,7 @@
 class webim_client
 {
     //TODO: should be const
-    var $apivsn = "v4";
+    var $apivsn = "v5";
 
 	var $user;
 	var $domain;
@@ -21,7 +21,7 @@ class webim_client
 	var $port;
 	var $client;
 	var $ticket;
-	var $version = 4;
+	var $version = 5;
 
 	/**
 	 * New
@@ -180,7 +180,7 @@ class webim_client
 	/**
 	 * Send message to other.
 	 *
-	 * @param string $type unicast or multicast or boardcast
+	 * @param string $type chat or grpchat or boardcast
 	 * @param string $to message receiver
 	 * @param string $body message
 	 * @param string $style css

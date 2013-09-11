@@ -156,12 +156,12 @@ function webim_action_online() {
 		//Provide history for active buddies and rooms
 		foreach($active_buddies as $id){
 			if(isset($cache_buddies[$id])){
-				$cache_buddies[$id]->history = webim_get_history($id, "unicast" );
+				$cache_buddies[$id]->history = webim_get_history($id, "chat" );
 			}
 		}
 		foreach($active_rooms as $id){
 			if(isset($cache_rooms[$id])){
-				$cache_rooms[$id]->history = webim_get_history( $id, "multicast" );
+				$cache_rooms[$id]->history = webim_get_history( $id, "grpchat" );
 			}
 		}
 

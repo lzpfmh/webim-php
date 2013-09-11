@@ -93,16 +93,16 @@ define( "WEBIM_HISTORY_KEYS", "`to`,`nick`,`from`,`style`,`body`,`type`,`timesta
  * Get history message
  *
  * @param string $with chat
- * @param string $type unicast or multicast
+ * @param string $type chat or grpchat
  * @param int    $limit history num
  *
  * Example:
  *
- * 	webim_get_history( 'susan', 'unicast' );
+ * 	webim_get_history( 'susan', 'chat' );
  *
  */
 
-function webim_get_history( $with, $type = 'unicast', $limit = 30 ) {
+function webim_get_history( $with, $type = 'chat', $limit = 30 ) {
 	global $imdb, $imuser;
 
 	if ( !$imdb || !$imuser )
@@ -110,15 +110,15 @@ function webim_get_history( $with, $type = 'unicast', $limit = 30 ) {
 
 	$user_id = $imuser->id;
 
-	if( $type == "unicast" ){
+	if( $type == "chat" ){
 		$query = $imdb->prepare( "SELECT " . WEBIM_HISTORY_KEYS . " FROM $imdb->webim_histories  
-			WHERE `type` = 'unicast' 
+			WHERE `type` = 'chat' 
 			AND ((`to`=%s AND `from`=%s AND `fromdel` != 1) 
 			OR (`send` = 1 AND `from`=%s AND `to`=%s AND `todel` != 1))  
 			ORDER BY timestamp DESC LIMIT %d", $with, $user_id, $with, $user_id, $limit );
 	} else {
 		$query = $imdb->prepare( "SELECT " . WEBIM_HISTORY_KEYS . " FROM $imdb->webim_histories  
-			WHERE `to`=%s AND `type`='multicast' AND send = 1 
+			WHERE `to`=%s AND `type`='grpchat' AND send = 1 
 			ORDER BY timestamp DESC LIMIT %d", $with, $limit );
 	}
 
@@ -138,15 +138,15 @@ function webim_clear_history( $with ) {
 	if ( !$imdb || !$imuser )
 		return false;
 
-	$imdb->update( $imdb->webim_histories, array( "fromdel" => 1, "type" => "unicast" ), array( "from" => $imuser->id, "to" => $with ) );
-	$imdb->update( $imdb->webim_histories, array( "todel" => 1, "type" => "unicast" ), array( "to" => $imuser->id, "from" => $with ) );
+	$imdb->update( $imdb->webim_histories, array( "fromdel" => 1, "type" => "chat" ), array( "from" => $imuser->id, "to" => $with ) );
+	$imdb->update( $imdb->webim_histories, array( "todel" => 1, "type" => "chat" ), array( "to" => $imuser->id, "from" => $with ) );
 	$imdb->query( $imdb->prepare( "DELETE FROM $imdb->webim_histories WHERE todel=1 AND fromdel=1" ) );
 }
 
 /**
  * Clear user history message
  *
- * @param string $type unicast or multicast
+ * @param string $type chat or grpchat
  * @param string $to message receiver
  * @param string $body message
  * @param string $style css
