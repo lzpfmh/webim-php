@@ -19,7 +19,7 @@ header('Content-Disposition: attachment; filename="histories-'.$date.'.html"');
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="robots" content="index, follow" />
-		<title>WebIM聊天记录</title>
+		<title>WebIM Histories</title>
 		<style type="text/css">
 			body{
 				font-size: 12px;
@@ -84,7 +84,7 @@ header('Content-Disposition: attachment; filename="histories-'.$date.'.html"');
 	<body>
 			<div id="header">
 				<h3>WebIM</h3>
-				<h2>聊天记录 <?php echo $date ?></h2>
+				<h2>Histories <?php echo $date ?></h2>
 			</div>
 			<div id="content">
 				<div id="log">
